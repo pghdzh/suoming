@@ -1,0 +1,460 @@
+/* =========================================================
+   锁暝 · 全局设计令牌 & 基础质感层
+   —— 所有页面共用的字体、变量、滚动条、焦点环、纸感与印章工具类
+   ========================================================= */
+
+/* ---------- 字体：全站唯一声明处（原先在 4 个 .vue 里各写了一遍） ---------- */
+@font-face {
+  font-family: "MaShanZheng";
+  src: url("../assets/fonts/MaShanZheng-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* 墨与血 */
+  --sm-ink: #060305;
+  --sm-ink-2: #0f0508;
+  --sm-ink-3: #1c070e;
+  --sm-blood: #5c0a16;
+  --sm-red: #c0142f;
+  --sm-red-lt: #ff3a56;
+  --sm-red-glow: #ff8a9b;
+  /* 紫与金 */
+  --sm-violet: #6a3ae0;
+  --sm-violet-lt: #a98bff;
+  --sm-gold: #c2a061;
+  --sm-gold-lt: #f2ddab;
+  /* 纸 */
+  --sm-paper: #fdf4f5;
+
+  /* 字族 */
+  --sm-font-title: "MaShanZheng", "全字库正宋体", serif;
+  --sm-font-body: "Noto Serif SC", "Source Han Serif SC", "Songti SC",
+    "STSong", "SimSun", serif;
+  --sm-font-en: "Cinzel", "Times New Roman", serif;
+  --sm-font-mono: ui-monospace, "SF Mono", "Cascadia Mono", Consolas,
+    monospace;
+
+  /* 节奏：给所有页面一套统一的“呼吸” */
+  --sm-radius: 4px;
+  --sm-shadow-panel: 0 18px 48px rgba(0, 0, 0, 0.55);
+  --sm-shadow-hover: 0 14px 34px rgba(192, 20, 47, 0.16);
+
+  /* 纸纤维噪点：以 CSS 变量复用，避免每页各写一段 data-uri */
+  --sm-grain: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+}
+
+html,
+body {
+  background: var(--sm-ink);
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  color: var(--sm-paper);
+  font-family: var(--sm-font-body);
+}
+
+/* ---------- 滚动条：恢复“位置感”，但仍保持细窄克制 ---------- */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.02);
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    180deg,
+    rgba(192, 20, 47, 0.55),
+    rgba(106, 58, 224, 0.35)
+  );
+  border-radius: 8px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 58, 86, 0.85),
+    rgba(169, 139, 255, 0.6)
+  );
+  background-clip: padding-box;
+}
+
+@supports (scrollbar-width: thin) {
+  html {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(192, 20, 47, 0.6) transparent;
+  }
+}
+
+/* ---------- 选中文字：像被朱笔划过 ---------- */
+::selection {
+  background: rgba(192, 20, 47, 0.42);
+  color: #fff8f8;
+  text-shadow: none;
+}
+
+/* ---------- 键盘焦点：全站原本一条都没有 ---------- */
+:focus-visible {
+  outline: 1px solid rgba(242, 221, 171, 0.9);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+[tabindex]:focus-visible {
+  outline: 1px solid rgba(242, 221, 171, 0.9);
+  outline-offset: 3px;
+}
+
+/* 触屏点按别闪系统蓝 */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* 内部滚动区：滚到头别把整页一起带着滚，滚动条出现时也别把内容挤歪 */
+.messages,
+.list-area,
+.scroll-container,
+.entry-scroll,
+.resource-scroll,
+.detail-content,
+.playlist {
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+}
+
+/* =========================================================
+   可复用的“人味”零件
+   ========================================================= */
+
+/* 手写便签：叠在卡片角上的小纸条 */
+.sm-note {
+  position: relative;
+  display: inline-block;
+  padding: 10px 14px 8px;
+  max-width: 260px;
+  font-family: var(--sm-font-title);
+  font-size: 15px;
+  line-height: 1.7;
+  color: #3a1f22;
+  background: #f4e6cf;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.45);
+  transform: rotate(-1.6deg);
+  transform-origin: 0 0;
+
+  &::before {
+    /* 胶带 */
+    content: "";
+    position: absolute;
+    top: -7px;
+    left: 50%;
+    width: 54px;
+    height: 14px;
+    margin-left: -27px;
+    background: rgba(255, 255, 255, 0.18);
+    border-left: 1px solid rgba(255, 255, 255, 0.12);
+    border-right: 1px solid rgba(255, 255, 255, 0.12);
+    transform: rotate(1.4deg);
+  }
+
+  &--right {
+    transform: rotate(1.8deg);
+    transform-origin: 100% 0;
+  }
+
+  &--violet {
+    background: #e9e2f7;
+  }
+}
+
+/* 朱印：小方形印章 */
+.sm-seal {
+  display: inline-grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  font-family: var(--sm-font-title);
+  font-size: 17px;
+  line-height: 1;
+  color: #ffe9dd;
+  background: linear-gradient(160deg, #c0142f, #7c0b1c);
+  border: 1px solid rgba(255, 154, 168, 0.55);
+  box-shadow: 0 3px 10px rgba(192, 20, 47, 0.35),
+    inset 0 0 8px rgba(0, 0, 0, 0.35);
+  transform: rotate(-4deg);
+  user-select: none;
+}
+
+/* 纸面纹理：给任意面板加一层极淡的纤维 + 内阴影 */
+.sm-paper-texture {
+  position: relative;
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: var(--sm-grain);
+    opacity: 0.05;
+    mix-blend-mode: overlay;
+  }
+}
+
+/* 文本细节：中文标点悬挂、数字等宽 */
+.sm-mono-num {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- 滚动入场：v-reveal 只加类，节奏在这里统一 ---------- */
+.sm-reveal {
+  opacity: 0;
+  transform: translate3d(0, var(--reveal-y, 18px), 0);
+  transition:
+    opacity 0.72s cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay, 0ms),
+    transform 0.82s cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+
+  &.is-revealed {
+    opacity: 1;
+    transform: none;
+    will-change: auto;
+  }
+}
+
+/* ---------- 小零件：竖排标签 / 赤金细线 / 折角 / 四角框 ---------- */
+/* 竖排英文小标：放在标题一侧，像档案卡上的编号 */
+.sm-kicker {
+  font-family: var(--sm-font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  color: rgba(194, 160, 97, 0.62);
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+}
+
+/* 赤金细线 + 中央菱钉，用来分隔两个区块 */
+.sm-rule {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  color: rgba(194, 160, 97, 0.22);
+
+  &::before,
+  &::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(194, 160, 97, 0.28),
+      transparent
+    );
+  }
+
+  &::after {
+    transform: scaleX(-1);
+  }
+
+  i {
+    width: 6px;
+    height: 6px;
+    flex: none;
+    background: rgba(192, 20, 47, 0.8);
+    transform: rotate(45deg);
+    box-shadow: 0 0 8px rgba(192, 20, 47, 0.6);
+  }
+}
+
+/* 折角：纸页右上角被翻起的一小角 */
+.sm-dogear {
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 22px 22px 0;
+    border-color: transparent rgba(194, 160, 97, 0.16) transparent transparent;
+    transition: border-width 0.28s ease;
+  }
+
+  &:hover::before {
+    border-width: 0 30px 30px 0;
+    border-color: transparent rgba(192, 20, 47, 0.34) transparent transparent;
+  }
+}
+
+/* 四角细框：不安在整块上，只提示“这里被收进档案了” */
+.sm-frame {
+  position: relative;
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    pointer-events: none;
+    border-color: rgba(194, 160, 97, 0.34);
+    border-style: solid;
+  }
+
+  &::before {
+    top: -1px;
+    left: -1px;
+    border-width: 1px 0 0 1px;
+  }
+
+  &::after {
+    right: -1px;
+    bottom: -1px;
+    border-width: 0 1px 1px 0;
+  }
+}
+
+/* ---------- 路由进度条：把默认的蓝换成赤金 ---------- */
+#nprogress .bar {
+  height: 2px;
+  background: linear-gradient(90deg, #5c0a16, #c0142f 45%, #f2ddab 100%);
+}
+#nprogress .peg {
+  box-shadow: 0 0 14px rgba(192, 20, 47, 0.9), 0 0 6px rgba(242, 221, 171, 0.8);
+}
+#nprogress .spinner {
+  display: none;
+}
+
+/* ---------- Element Plus 提示条与确认框：默认是亮色的，这里压成暗底 ---------- */
+.el-message {
+  padding: 11px 18px;
+  border-radius: 3px;
+  background: rgba(18, 5, 9, 0.94);
+  border: 1px solid rgba(194, 160, 97, 0.26);
+  box-shadow: 0 18px 40px -22px rgba(0, 0, 0, 0.95),
+    inset 0 0 0 1px rgba(192, 20, 47, 0.1);
+  backdrop-filter: blur(10px);
+
+  .el-message__content {
+    font-family: var(--sm-font-body);
+    font-size: 13.5px;
+    letter-spacing: 0.04em;
+    color: #f2ddab;
+  }
+
+  .el-message__icon {
+    color: #ff8a9b;
+  }
+
+  &.el-message--success .el-message__icon {
+    color: #c2a061;
+  }
+
+  &.el-message--warning .el-message__icon {
+    color: #f2ddab;
+  }
+}
+
+.el-overlay {
+  background-color: rgba(4, 1, 3, 0.72);
+  backdrop-filter: blur(4px);
+}
+
+.el-message-box {
+  --el-messagebox-border-radius: 3px;
+  padding: 22px 24px 18px;
+  background:
+    linear-gradient(180deg, rgba(30, 8, 14, 0.98), rgba(12, 4, 7, 0.98));
+  border: 1px solid rgba(194, 160, 97, 0.26);
+  box-shadow: 0 30px 70px -30px rgba(0, 0, 0, 0.95),
+    inset 0 1px 0 rgba(255, 138, 155, 0.08);
+
+  .el-message-box__title {
+    font-family: var(--sm-font-title);
+    font-size: 19px;
+    letter-spacing: 0.1em;
+    color: #f2ddab;
+  }
+
+  .el-message-box__content {
+    font-family: var(--sm-font-body);
+    font-size: 13.5px;
+    line-height: 1.9;
+    color: rgba(233, 221, 224, 0.82);
+  }
+
+  .el-message-box__headerbtn .el-message-box__close {
+    color: rgba(233, 221, 224, 0.5);
+
+    &:hover {
+      color: #ff3a56;
+    }
+  }
+
+  .el-message-box__btns {
+    padding-top: 16px;
+  }
+
+  .el-button {
+    font-family: var(--sm-font-body);
+    letter-spacing: 0.08em;
+    border-radius: 2px;
+    background: rgba(255, 255, 255, 0.03);
+    border-color: rgba(194, 160, 97, 0.28);
+    color: rgba(233, 221, 224, 0.85);
+
+    &:hover,
+    &:focus {
+      background: rgba(192, 20, 47, 0.16);
+      border-color: rgba(255, 58, 86, 0.5);
+      color: #ffe9dd;
+    }
+
+    &.el-button--primary {
+      background: linear-gradient(160deg, #8f0d22, #5c0a16);
+      border-color: rgba(255, 138, 155, 0.4);
+      color: #ffe9dd;
+
+      &:hover,
+      &:focus {
+        background: linear-gradient(160deg, #c0142f, #7c0b1c);
+        border-color: rgba(255, 138, 155, 0.7);
+      }
+    }
+  }
+}
+
+/* 减弱动效：只砍装饰性无限动画，保留必要的过渡 */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+
+  .sm-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

@@ -1,0 +1,273 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
+}
+body {
+  line-height: 1;
+}
+ol,
+ul {
+  list-style: none;
+}
+blockquote,
+q {
+  quotes: none;
+}
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: "";
+  content: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* 滚动条样式统一在 src/styles/theme.scss 里定义（保留位置感，别整站隐藏） */
+
+.__live2d-toolbox-item.button-item {
+  display: none !important;
+}
+
+@keyframes cursorAnimation {
+  0% {
+    cursor: url("/cursor/normal/1 (1).webp"), auto;
+  }
+  12.5% {
+    cursor: url("/cursor/normal/1 (2).webp"), auto;
+  }
+  25% {
+    cursor: url("/cursor/normal/1 (3).webp"), auto;
+  }
+  37.5% {
+    cursor: url("/cursor/normal/1 (4).webp"), auto;
+  }
+  50% {
+    cursor: url("/cursor/normal/1 (5).webp"), auto;
+  }
+  62.5% {
+    cursor: url("/cursor/normal/1 (6).webp"), auto;
+  }
+  75% {
+    cursor: url("/cursor/normal/1 (7).webp"), auto;
+  }
+  87.5% {
+    cursor: url("/cursor/normal/1 (8).webp"), auto;
+  }
+  100% {
+    cursor: url("/cursor/normal/1 (1).webp"), auto;
+  }
+}
+/* 1.6s 走完 8 帧：每帧 200ms，比原来的 125ms 更稳、不闪 */
+button {
+  animation: cursorAnimation_link 1.6s infinite step-start;
+}
+a {
+  animation: cursorAnimation_link 1.6s infinite step-start;
+}
+input,
+textarea {
+  animation: cursorAnimation_input 1.6s infinite step-start;
+}
+select {
+  animation: cursorAnimation_link 1.6s infinite step-start;
+}
+@keyframes cursorAnimation_link {
+  0% {
+    cursor: url("/cursor/link/1 (1).webp"), auto;
+  }
+  12.5% {
+    cursor: url("/cursor/link/1 (2).webp"), auto;
+  }
+  25% {
+    cursor: url("/cursor/link/1 (3).webp"), auto;
+  }
+  37.5% {
+    cursor: url("/cursor/link/1 (4).webp"), auto;
+  }
+  50% {
+    cursor: url("/cursor/link/1 (5).webp"), auto;
+  }
+  62.5% {
+    cursor: url("/cursor/link/1 (6).webp"), auto;
+  }
+  75% {
+    cursor: url("/cursor/link/1 (7).webp"), auto;
+  }
+  87.5% {
+    cursor: url("/cursor/link/1 (8).webp"), auto;
+  }
+  100% {
+    cursor: url("/cursor/link/1 (1).webp"), auto;
+  }
+}
+
+@keyframes cursorAnimation_disabled {
+  0% {
+    cursor: url("/cursor/disabled/1 (1).webp"), auto;
+  }
+  12.5% {
+    cursor: url("/cursor/disabled/1 (2).webp"), auto;
+  }
+  25% {
+    cursor: url("/cursor/disabled/1 (3).webp"), auto;
+  }
+  37.5% {
+    cursor: url("/cursor/disabled/1 (4).webp"), auto;
+  }
+  50% {
+    cursor: url("/cursor/disabled/1 (5).webp"), auto;
+  }
+  62.5% {
+    cursor: url("/cursor/disabled/1 (6).webp"), auto;
+  }
+  75% {
+    cursor: url("/cursor/disabled/1 (7).webp"), auto;
+  }
+  87.5% {
+    cursor: url("/cursor/disabled/1 (8).webp"), auto;
+  }
+  100% {
+    cursor: url("/cursor/disabled/1 (1).webp"), auto;
+  }
+}
+
+@keyframes cursorAnimation_input {
+  0% {
+    cursor: url("/cursor/input/1 (1).webp"), auto;
+  }
+  12.5% {
+    cursor: url("/cursor/input/1 (2).webp"), auto;
+  }
+  25% {
+    cursor: url("/cursor/input/1 (3).webp"), auto;
+  }
+  37.5% {
+    cursor: url("/cursor/input/1 (4).webp"), auto;
+  }
+  50% {
+    cursor: url("/cursor/input/1 (5).webp"), auto;
+  }
+  62.5% {
+    cursor: url("/cursor/input/1 (6).webp"), auto;
+  }
+  75% {
+    cursor: url("/cursor/input/1 (7).webp"), auto;
+  }
+  87.5% {
+    cursor: url("/cursor/input/1 (8).webp"), auto;
+  }
+  100% {
+    cursor: url("/cursor/input/1 (1).webp"), auto;
+  }
+}
